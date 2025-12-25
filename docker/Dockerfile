@@ -19,15 +19,20 @@ FROM python:3.12-alpine
 LABEL maintainer="cmahnke@gmail.com"
 
 COPY --from=builder /usr/lib/libheif* /usr/lib/
+COPY --from=builder /usr/lib/cmake/libheif /usr/lib/cmake/libheif/
+COPY --from=builder /usr/include/libheif /usr/include/libheif/
+COPY --from=builder /usr/lib/pkgconfig/libheif.pc /usr/lib/pkgconfig/libheif.pc
 COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
 
 RUN apk --update upgrade && \
     apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo \
-    libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ && \
+    libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
-    pip install --root-user-action ignore pyexiftool numpy opencv-python-headless
+    pip install --root-user-action ignore pyexiftool
 
-RUN python3 -c "import libheif; print('libheif python module loaded successfully')" && \
+RUN python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
     exiftool -ver
+
+RUN rm -rf /var/cache/apk/* /root/.cache
 
 CMD ["python3"]
