@@ -25,7 +25,7 @@ RUN apk add --no-cache \
     cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DJPEGXL_ENABLE_DEVTOOLS:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_BUILD_TYPE=Release -DJPEGXL_ENABLE_DOXYGEN:BOOL=OFF -DJPEGXL_ENABLE_BENCHMARK:BOOL=OFF -DJPEGXL_ENABLE_EXAMPLES:BOOL=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr .. && \
     cmake --build . -- -j$(nproc) && \
     cmake --install . && \
-    pip install --root-user-action ignore  jxlpy && \
+    pip install --root-user-action ignore opencv-contrib-python-headless jxlpy && \
     pip install --no-binary :all: --root-user-action ignore git+https://github.com/bigcat88/pillow_heif.git
 
 FROM python:3.12-alpine
@@ -53,7 +53,7 @@ RUN apk --update upgrade && \
     apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs opencv \
     libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
-    pip install --root-user-action ignore pyexiftool opencv-contrib-python-headless && \
+    pip install --root-user-action ignore pyexiftool && \
     chmod +x /usr/local/bin/*.py
 
 RUN python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
