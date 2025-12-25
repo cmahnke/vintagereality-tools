@@ -37,6 +37,16 @@ COPY --from=builder /usr/lib/cmake/libheif /usr/lib/cmake/libheif/
 COPY --from=builder /usr/include/libheif /usr/include/libheif/
 COPY --from=builder /usr/lib/pkgconfig/libheif.pc /usr/lib/pkgconfig/libheif.pc
 COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
+COPY --from=builder /usr/include/brotli/  /usr/include/brotli/
+COPY --from=builder /usr/lib/pkgconfig/libbrotli* /usr/lib/pkgconfig/
+COPY --from=builder /usr/lib/libjxl* /usr/lib/
+COPY --from=builder /usr/lib/libbrotli* /usr/lib/
+COPY --from=builder /usr/include/jxl/ /usr/include/jxl/
+COPY --from=builder /usr/lib/cmake/hwy/ /usr/lib/cmake/hwy/
+COPY --from=builder /usr/include/hwy/ /usr/include/hwy/
+COPY --from=builder /usr/lib/libhwy.a /usr/lib/libhwy.a
+COPY --from=builder /usr/lib/pkgconfig/libhwy.pc /usr/lib/pkgconfig/libhwy.pc
+
 COPY ./scripts/* /usr/local/bin/
 
 RUN apk --update upgrade && \
