@@ -5,7 +5,7 @@ ENV BUILD_DIR=/tmp/build \
     DEFAULT_GIT_TAG="v0.11.1"
 
 RUN apk add --no-cache \
-    git cmake make g++ gcc pkgconfig python3-dev libde265-dev libjpeg-turbo-dev libpng-dev x264-dev x265-dev openh264-dev aom-dev aom-static aom libsharpyuv dav1d-dev musl-dev gdk-pixbuf-dev brotli-dev clang-dev make libc-dev libgcc binutils pkgconfig && \
+    git cmake make g++ gcc pkgconfig python3-dev libde265-dev libjpeg-turbo-dev libpng-dev x264-dev x265-dev openh264-dev aom-dev aom-static aom libsharpyuv dav1d-dev musl-dev gdk-pixbuf-dev brotli-dev clang-dev make libc-dev libgcc binutils pkgconfig opencv-dev && \
     mkdir $BUILD_DIR && \
     cd $BUILD_DIR && \
     git clone --recursive --depth 1 https://github.com/strukturag/libheif.git && \
@@ -50,7 +50,7 @@ COPY --from=builder /usr/lib/pkgconfig/libhwy.pc /usr/lib/pkgconfig/libhwy.pc
 COPY ./scripts/* /usr/local/bin/
 
 RUN apk --update upgrade && \
-    apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs \
+    apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs opencv \
     libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
     pip install --root-user-action ignore pyexiftool opencv-contrib-python-headless && \
