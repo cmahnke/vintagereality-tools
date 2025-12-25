@@ -50,7 +50,7 @@ COPY --from=builder /usr/lib/pkgconfig/libhwy.pc /usr/lib/pkgconfig/libhwy.pc
 COPY ./scripts/* /usr/local/bin/
 
 RUN apk --update upgrade && \
-    apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++  libatomic brotli-lib \
+    apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs \
     libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
     pip install --root-user-action ignore pyexiftool opencv-contrib-python-headless && \
