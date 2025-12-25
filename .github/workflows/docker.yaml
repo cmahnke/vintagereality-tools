@@ -12,6 +12,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  packages: write
+  contents: write
+
 jobs:
 
   libheif-python:
@@ -27,8 +31,8 @@ jobs:
         uses: docker/login-action@v3.6.0
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           logout: false
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
