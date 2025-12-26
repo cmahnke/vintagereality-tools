@@ -2,10 +2,13 @@ FROM python:3.12-alpine AS builder
 
 ENV BUILD_DIR=/tmp/build \
     GIT_URL="https://github.com/libjxl/libjxl.git" \
-    DEFAULT_GIT_TAG="v0.11.1"
+    DEFAULT_GIT_TAG="v0.11.1" \
+    OPENCV_CONTRIB=false
 
-RUN apk add --no-cache \
-    git cmake make g++ gcc pkgconfig python3-dev libde265-dev libjpeg-turbo-dev libpng-dev x264-dev x265-dev openh264-dev aom-dev aom-static aom libsharpyuv dav1d-dev musl-dev gdk-pixbuf-dev brotli-dev clang-dev make libc-dev libgcc binutils pkgconfig opencv-dev && \
+RUN apk add --no-cache git cmake make g++ gcc pkgconfig python3-dev libde265-dev libjpeg-turbo-dev libpng-dev x264-dev x265-dev openh264-dev aom-dev aom-static aom libsharpyuv dav1d-dev musl-dev gdk-pixbuf-dev brotli-dev clang-dev make libc-dev libgcc binutils pkgconfig && \
+    if [ "$OPENCV_CONTRIB" = "true" ] ; then \
+      apk add --no-cache  opencv-dev ffmpeg-dev ; \
+    fi && \
     mkdir $BUILD_DIR && \
     cd $BUILD_DIR && \
     git clone --recursive --depth 1 https://github.com/strukturag/libheif.git && \
@@ -25,8 +28,11 @@ RUN apk add --no-cache \
     cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DJPEGXL_ENABLE_DEVTOOLS:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_BUILD_TYPE=Release -DJPEGXL_ENABLE_DOXYGEN:BOOL=OFF -DJPEGXL_ENABLE_BENCHMARK:BOOL=OFF -DJPEGXL_ENABLE_EXAMPLES:BOOL=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr .. && \
     cmake --build . -- -j$(nproc) && \
     cmake --install . && \
-    pip install --root-user-action ignore opencv-contrib-python-headless jxlpy && \
-    pip install --no-binary :all: --root-user-action ignore git+https://github.com/bigcat88/pillow_heif.git
+    pip install --root-user-action ignore jxlpy && \
+    pip install --no-binary :all: --root-user-action ignore git+https://github.com/bigcat88/pillow_heif.git && \
+    if [ "$OPENCV_CONTRIB" = "true" ] ; then \
+      pip install --root-user-action ignore opencv-contrib-python-headless jxlpy ; \
+    fi
 
 FROM python:3.12-alpine
 
@@ -54,11 +60,9 @@ RUN apk --update upgrade && \
     libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
     pip install --root-user-action ignore pyexiftool && \
-    chmod +x /usr/local/bin/*.py
+    chmod +x /usr/local/bin/*.py && \
+    python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
+    python3 -c "import jxlpy; print('jxlpy python module loaded successfully')" && \
+    rm -rf /var/cache/apk/* /root/.cache
 
-RUN python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
-    exiftool -ver
-
-RUN rm -rf /var/cache/apk/* /root/.cache
-
-CMD ["python3"]
+CMD ["/usr/local/bin/spacial.py"]
