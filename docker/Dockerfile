@@ -59,7 +59,7 @@ RUN apk --update upgrade && \
     apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs opencv \
     libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
     pip install --upgrade pip && \
-    pip install --root-user-action ignore pyexiftool && \
+    pip install --root-user-action ignore stereoscopy && \
     chmod +x /usr/local/bin/*.py && \
     python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
     python3 -c "import jxlpy; print('jxlpy python module loaded successfully')" && \
