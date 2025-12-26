@@ -1,1 +1,6 @@
 test*
+datasets
+runs/
+data/*/labels.cache
+yolo*
+.DS_Store

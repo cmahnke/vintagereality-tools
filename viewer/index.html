@@ -4,8 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vintage Reality Viewer</title>
+    <link rel="stylesheet" href="/assets/scss/style.scss" />
   </head>
   <body>
+    <div id="controls">
+      <input type="url" id="iiif-url" placeholder="Enter IIIF info.json or manifest.json URL" />
+      <button id="load-iiif">Load</button>
+    </div>
     <div id="app"></div>
     <script type="module" src="/assets/ts/main.ts"></script>
   </body>

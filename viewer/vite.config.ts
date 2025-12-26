@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { NodePackageImporter } from "sass";
 
 export default defineConfig({
   plugins: [
@@ -11,5 +12,13 @@ export default defineConfig({
         }
       ]
     })
-  ]
+  ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+        importers: [new NodePackageImporter()]
+      }
+    }
+  }
 })

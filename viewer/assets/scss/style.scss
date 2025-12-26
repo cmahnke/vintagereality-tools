@@ -1,18 +1,94 @@
+@use 'sass:color';
+@use "pkg:@fontsource-utils/scss" as fontsource;
+
+@use "pkg:@fontsource-variable/fredoka/scss" as fredokaVariabale;
+@use "pkg:@fontsource-variable/oxanium/scss" as oxaniumVariabale;
+
+@include fontsource.faces($metadata: fredokaVariabale.$metadata, $weights: 400, $subsets: latin);
+@include fontsource.faces($metadata: oxaniumVariabale.$metadata, $weights: 400, $subsets: latin);
+
+$cyan: rgb(0,255,255);
+$magenta: rgb(255,0,255);
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  color-scheme: dark;
+  --background-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --accent-color: #{$cyan};
+  --button-bg: linear-gradient(70deg, #{color.adjust($cyan, $lightness: -20%)} 0%, #{color.adjust($magenta, $lightness: -20%)} 100%) fixed;
+  --button-text: #ffffff;
+  --cyan: #{$cyan};
+  --magenta: #{$magenta};
 }
 
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Fredoka Variable', sans-serif;
+  color: var(--text-color);
+  background: linear-gradient(70deg, color.adjust($cyan, $lightness: -40%) 0%, black 50%, color.adjust($magenta, $lightness: -40%) 100%) fixed;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  font-family: 'Oxanium Variable', serif;
+  margin-bottom: 0.5em;
+}
+
+#controls {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input[type="url"] {
+  padding: 0.6em;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: var(--text-color);
+  width: 15rem;
+  font-family: inherit;
+}
+
+button {
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 4px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font-weight: 500;
+  font-family: inherit;
+
+  &:hover {
+    background-color: color.adjust(#457b9d, $lightness: 10%);
+  }
+}
+
+#app {
+  font-family: inherit;
+  width: 100%;
+  max-width: 1280px;
+  padding: 2rem;
+  text-align: center;
+}
+
+pre {
+  text-align: left;
+  background: #111;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
 }

@@ -3,3 +3,8 @@ jxlpy
 stereoscopy
 torch
 torchvision
+gdown
+ultralytics
+onnx
+onnxruntime
+tensorflowjs

@@ -11,19 +11,22 @@
     "lint:style": "stylelint \"**/*.scss\""
   },
   "dependencies": {
-    "onnxruntime-web": "^1.17.1",
-    "manifesto.js": "^4.2.19",
-    "@techstark/opencv-js": "^4.12.0-release.1"
+    "onnxruntime-web": "^1.23.2",
+    "manifesto.js": "^4.3.0",
+    "@techstark/opencv-js": "^4.12.0-release.1",
+    "@fontsource-variable/fredoka": "^5.2.10",
+    "@fontsource-variable/oxanium": "^5.2.8"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "eslint": "^8.56.0",
-    "sass": "^1.70.0",
-    "stylelint": "^16.2.0",
-    "stylelint-config-standard-scss": "^13.0.0",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.0",
-    "vite-plugin-static-copy": "^1.0.1"
+    "@fontsource-utils/scss": "^0.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
+    "@typescript-eslint/parser": "^8.50.1",
+    "eslint": "^9.39.2",
+    "sass": "^1.97.1",
+    "stylelint": "^16.26.1",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vite-plugin-static-copy": "^3.1.4"
   }
 }
