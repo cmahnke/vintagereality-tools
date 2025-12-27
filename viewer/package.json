@@ -11,11 +11,11 @@
     "lint:style": "stylelint \"**/*.scss\""
   },
   "dependencies": {
-    "onnxruntime-web": "^1.23.2",
-    "manifesto.js": "^4.3.0",
-    "@techstark/opencv-js": "^4.12.0-release.1",
     "@fontsource-variable/fredoka": "^5.2.10",
-    "@fontsource-variable/oxanium": "^5.2.8"
+    "@fontsource-variable/oxanium": "^5.2.8",
+    "@techstark/opencv-js": "^4.12.0-release.1",
+    "manifesto.js": "^4.3.0",
+    "onnxruntime-web": "^1.23.2"
   },
   "devDependencies": {
     "@fontsource-utils/scss": "^0.2.2",

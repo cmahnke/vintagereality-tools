@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+
 import argparse
 import os
 import pathlib
@@ -18,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser(description="Prepare dataset for YOLO training from JXL images")
     parser.add_argument("--input", "-i", help="Root directory to search for front.jxl files")
     parser.add_argument("--manifest-list", "-m", help="File containing list of IIIF Manifest URLs")
-    parser.add_argument("--output", "-o", default="datasets", help="Output directory for the dataset")
+    parser.add_argument("--output", "-o", default="data/vintagereality", help="Output directory for the dataset")
     
     args = parser.parse_args()
     

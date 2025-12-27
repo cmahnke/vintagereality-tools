@@ -9,10 +9,28 @@ export default defineConfig({
         {
           src: 'node_modules/onnxruntime-web/dist/*.wasm',
           dest: '.'
+        },
+        {
+          src: 'node_modules/onnxruntime-web/dist/*.mjs',
+          dest: '.'
+        },
+        {
+          src: '../weights/vintagereality-*.onnx',
+          dest: 'model',
+          rename: 'vintagereality.onnx'
         }
       ]
     })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
+  },
   css: {
     preprocessorOptions: {
       scss: {
