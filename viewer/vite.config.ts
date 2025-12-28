@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from "path";
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodePackageImporter } from "sass";
 import * as fs from 'fs';
@@ -55,6 +56,10 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        images: resolve(__dirname, 'images.html')
+      },
       output: {
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,

@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:style": "stylelint \"**/*.scss\""
+    "lint:style": "stylelint \"**/*.scss\"",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@fontsource-variable/fredoka": "^5.2.10",
