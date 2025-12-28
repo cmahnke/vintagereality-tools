@@ -30,6 +30,7 @@ export default defineConfig({
     generateImagesJson(),
     viteStaticCopy({
       targets: [
+        /*
         {
           src: 'node_modules/onnxruntime-web/dist/*.wasm',
           dest: '.'
@@ -46,9 +47,11 @@ export default defineConfig({
           src: 'node_modules/onnxruntime-web/dist/*.mjs',
           dest: '.'
         },
+        */
         {
           src: '../weights/vintagereality-*.onnx',
           dest: 'model',
+          silent: true,
           rename: 'vintagereality.onnx'
         }
       ]
