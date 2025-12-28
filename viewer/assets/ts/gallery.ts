@@ -12,7 +12,7 @@ async function loadGallery() {
     }
 
     try {
-        const response = await fetch('/images.json');
+        const response = await fetch('images.json');
         if (!response.ok) {
             throw new Error('Failed to load image list');
         }

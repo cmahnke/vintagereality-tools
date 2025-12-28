@@ -31,6 +31,16 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install HF CLI
+        run: |
+          curl -fsSL https://huggingface.co/install.sh | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Log in to Hugging Face Hub
+        run: |
+          hf download cmahnke/vintagereality vintagereality-1.0.onnx
+          mv vintagereality-1.0.onnx ../weights/vintagereality-1.0.onnx
+
       - name: Install dependencies
         run: npm install
 
