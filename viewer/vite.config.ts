@@ -47,13 +47,13 @@ export default defineConfig({
           src: 'node_modules/onnxruntime-web/dist/*.mjs',
           dest: '.'
         },
-        */
         {
           src: '../weights/vintagereality-*.onnx',
           dest: 'model',
           silent: true,
           rename: 'vintagereality.onnx'
         }
+        */
       ]
     })
   ],
