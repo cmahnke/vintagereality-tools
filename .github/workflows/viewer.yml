@@ -16,6 +16,8 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: vintagereality-tools
     defaults:
       run:
         working-directory: viewer

@@ -5,6 +5,8 @@ import { NodePackageImporter } from "sass";
 import * as fs from 'fs';
 import * as path from 'path';
 
+const BASE_URL = process.env.BASE_URL || '';
+
 function generateImagesJson() {
   return {
     name: 'generate-images-json',
@@ -26,6 +28,7 @@ function generateImagesJson() {
 }
 
 export default defineConfig({
+  base: `${BASE_URL}/`,
   plugins: [
     generateImagesJson(),
     viteStaticCopy({
