@@ -39,6 +39,7 @@ jobs:
       - name: Log in to Hugging Face Hub
         run: |
           hf download cmahnke/vintagereality vintagereality-1.0.onnx
+          mkdit -p ../weights
           mv vintagereality-1.0.onnx ../weights/vintagereality-1.0.onnx
 
       - name: Install dependencies
