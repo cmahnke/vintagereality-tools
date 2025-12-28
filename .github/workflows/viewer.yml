@@ -38,10 +38,9 @@ jobs:
 
       - name: Download model
         run: |
-          hf download cmahnke/vintagereality vintagereality-1.0.onnx
           mkdir -p ../weights
-          mv vintagereality-1.0.onnx ../weights/vintagereality-1.0.onnx
-
+          hf download --local-dir ../weights cmahnke/vintagereality vintagereality-1.0.onnx
+          
       - name: Install dependencies
         run: npm install
 
