@@ -27,11 +27,11 @@ async function loadGallery() {
 
         images.forEach(image => {
             const link = document.createElement('a');
-            link.href = `/images/${image}`;
+            link.href = `images/${image}`;
             link.className = 'gallery-item';
 
             const img = document.createElement('img');
-            img.src = `/images/${image}`;
+            img.src = `images/${image}`;
             img.alt = image;
             img.loading = 'lazy';
 
