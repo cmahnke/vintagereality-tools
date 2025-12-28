@@ -1,68 +1,28 @@
-FROM python:3.12-alpine AS builder
-
-ENV BUILD_DIR=/tmp/build \
-    GIT_URL="https://github.com/libjxl/libjxl.git" \
-    DEFAULT_GIT_TAG="v0.11.1" \
-    OPENCV_CONTRIB=false
-
-RUN apk add --no-cache git cmake make g++ gcc pkgconfig python3-dev libde265-dev libjpeg-turbo-dev libpng-dev x264-dev x265-dev openh264-dev aom-dev aom-static aom libsharpyuv dav1d-dev musl-dev gdk-pixbuf-dev brotli-dev clang-dev make libc-dev libgcc binutils pkgconfig && \
-    if [ "$OPENCV_CONTRIB" = "true" ] ; then \
-      apk add --no-cache  opencv-dev ffmpeg-dev ; \
-    fi && \
-    mkdir $BUILD_DIR && \
-    cd $BUILD_DIR && \
-    git clone --recursive --depth 1 https://github.com/strukturag/libheif.git && \
-    cd $BUILD_DIR/libheif && \
-    mkdir build && cd build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DENABLE_EXPERIMENTAL_FEATURES=ON && \
-    make -j$(nproc) && \
-    make install && \
-    cd .. && \
-    if [ -z "$GIT_TAG" ] ; then \
-        GIT_TAG=$DEFAULT_GIT_TAG ; \
-    fi && \
-    git clone --depth 1 --recursive $GIT_URL --branch "$GIT_TAG" --shallow-submodules && \
-    cd libjxl && \
-    mkdir build && cd build && \
-    export CC=clang CXX=clang++ && \
-    cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DJPEGXL_ENABLE_DEVTOOLS:BOOL=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DCMAKE_BUILD_TYPE=Release -DJPEGXL_ENABLE_DOXYGEN:BOOL=OFF -DJPEGXL_ENABLE_BENCHMARK:BOOL=OFF -DJPEGXL_ENABLE_EXAMPLES:BOOL=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr .. && \
-    cmake --build . -- -j$(nproc) && \
-    cmake --install . && \
-    pip install --root-user-action ignore jxlpy && \
-    pip install --no-binary :all: --root-user-action ignore git+https://github.com/bigcat88/pillow_heif.git && \
-    if [ "$OPENCV_CONTRIB" = "true" ] ; then \
-      pip install --root-user-action ignore opencv-contrib-python-headless jxlpy ; \
-    fi
-
-FROM python:3.12-alpine
+FROM python:3.11-slim AS builder
 
 LABEL maintainer="cmahnke@gmail.com"
+LABEL org.opencontainers.image.source="https://github.com/cmahnke/vintagereality-tools"
 
-COPY --from=builder /usr/lib/libheif* /usr/lib/
-COPY --from=builder /usr/lib/cmake/libheif /usr/lib/cmake/libheif/
-COPY --from=builder /usr/include/libheif /usr/include/libheif/
-COPY --from=builder /usr/lib/pkgconfig/libheif.pc /usr/lib/pkgconfig/libheif.pc
-COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
-COPY --from=builder /usr/include/brotli/  /usr/include/brotli/
-COPY --from=builder /usr/lib/pkgconfig/libbrotli* /usr/lib/pkgconfig/
-COPY --from=builder /usr/lib/libjxl* /usr/lib/
-COPY --from=builder /usr/lib/libbrotli* /usr/lib/
-COPY --from=builder /usr/include/jxl/ /usr/include/jxl/
-COPY --from=builder /usr/lib/cmake/hwy/ /usr/lib/cmake/hwy/
-COPY --from=builder /usr/include/hwy/ /usr/include/hwy/
-COPY --from=builder /usr/lib/libhwy.a /usr/lib/libhwy.a
-COPY --from=builder /usr/lib/pkgconfig/libhwy.pc /usr/lib/pkgconfig/libhwy.pc
+COPY requirements.txt /tmp/requirements.txt
+COPY ./scripts/spatial.py /usr/local/bin/
 
-COPY ./scripts/* /usr/local/bin/
-
-RUN apk --update upgrade && \
-    apk add --no-cache gdk-pixbuf exiftool libde265 openh264 libjpeg-turbo libstdc++ libatomic brotli-libs opencv \
-    libpng x264-libs x265-libs aom aom-libs dav1d libsharpyuv libstdc++ py3-numpy py3-opencv && \
-    pip install --upgrade pip && \
-    pip install --root-user-action ignore stereoscopy && \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libimage-exiftool-perl libde265-0 libjpeg62-turbo libgl1 libstdc++6 libatomic1 libbrotli1 libpng16-16 libjxl0.11 libglib2.0-0 \
+    libx264-164 libx265-215 libaom3 libdav1d7 libopenh264-8 libhwy1t64 libsharpyuv0 && \
+    echo "deb http://deb.debian.org/debian unstable main" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libheif1 && \
+    pip install --root-user-action ignore --upgrade pip setuptools wheel && \
+    pip install --root-user-action ignore jxlpy && \
+    pip install --root-user-action ignore -r /tmp/requirements.txt && \
     chmod +x /usr/local/bin/*.py && \
     python3 -c "import pillow_heif; print('pillow_heif python module loaded successfully')" && \
     python3 -c "import jxlpy; print('jxlpy python module loaded successfully')" && \
-    rm -rf /var/cache/apk/* /root/.cache
+    python3 -c "import torch; print('PyTorch python module loaded successfully')" && \
+    python3 -c "import cv2; print('OpenCV python module loaded successfully')" && \
+    rm -rf /root/.cache /tmp/requirements.txt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-CMD ["/usr/local/bin/spacial.py"]
+
+CMD ["/usr/local/bin/spatial.py"]

@@ -1,11 +1,12 @@
 pillow_heif
 jxlpy
+opencv-python-headless
 stereoscopy
-torch
-torchvision
 gdown
 ultralytics
-onnx>=1.12.0,<2.0.0
-onnxslim>=0.1.71
+huggingface_hub
+onnx
+onnxslim
+torch
+torchvision
 onnxruntime
-tensorflowjs

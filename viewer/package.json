@@ -14,6 +14,8 @@
     "@fontsource-variable/fredoka": "^5.2.10",
     "@fontsource-variable/oxanium": "^5.2.8",
     "@techstark/opencv-js": "^4.12.0-release.1",
+    "@uswriting/exiftool": "^1.0.9",
+    "libheif-js": "^1.19.8",
     "manifesto.js": "^4.3.0",
     "onnxruntime-web": "^1.23.2"
   },

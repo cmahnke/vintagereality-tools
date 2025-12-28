@@ -11,6 +11,14 @@ export default defineConfig({
           dest: '.'
         },
         {
+          src: 'node_modules/@6over3/zeroperl-ts/dist/esm/*.wasm',
+          dest: '.'
+        },
+        {
+          src: 'node_modules/libheif-js/libheif-wasm/*.wasm',
+          dest: '.'
+        },
+        {
           src: 'node_modules/onnxruntime-web/dist/*.mjs',
           dest: '.'
         },
