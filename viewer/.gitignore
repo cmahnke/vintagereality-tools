@@ -3,3 +3,4 @@ dist
 .DS_Store
 *.wasm
 *.onnx
+public/images.json

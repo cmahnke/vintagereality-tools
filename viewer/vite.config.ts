@@ -1,9 +1,32 @@
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import { NodePackageImporter } from "sass";
+import * as fs from 'fs';
+import * as path from 'path';
+
+function generateImagesJson() {
+  return {
+    name: 'generate-images-json',
+    buildStart() {
+      const imagesDir = path.resolve(__dirname, 'public/images');
+      const outputPath = path.resolve(__dirname, 'public/images.json');
+      
+      if (fs.existsSync(imagesDir)) {
+        const files = fs.readdirSync(imagesDir).filter(file => {
+          return /\.(heic)$/i.test(file);
+        });
+        fs.writeFileSync(outputPath, JSON.stringify(files, null, 2));
+        console.log(`Generated images.json with ${files.length} images.`);
+      } else {
+        console.warn('public/images directory not found, skipping images.json generation.');
+      }
+    }
+  };
+}
 
 export default defineConfig({
   plugins: [
+    generateImagesJson(),
     viteStaticCopy({
       targets: [
         {
