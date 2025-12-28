@@ -36,10 +36,10 @@ jobs:
           curl -LsSf https://hf.co/cli/install.sh | bash
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Log in to Hugging Face Hub
+      - name: Download model
         run: |
           hf download cmahnke/vintagereality vintagereality-1.0.onnx
-          mkdit -p ../weights
+          mkdir -p ../weights
           mv vintagereality-1.0.onnx ../weights/vintagereality-1.0.onnx
 
       - name: Install dependencies
