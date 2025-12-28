@@ -16,7 +16,8 @@ def main():
     parser.add_argument("--imgsz", type=int, default=640, help="Image size")
     parser.add_argument("--model", default="yolo11n-seg.pt", help="Pretrained model (e.g. yolo11n-seg.pt, yolov8n-seg.pt)")
     parser.add_argument("--output", default="runs/segment/train", help="Output directory")
-    parser.add_argument("--export", action="store_true", help="Export to TF.js and ONNX after training")
+    parser.add_argument("--export", action="store_true", help="Export to ONNX after training")
+    parser.add_argument("--quantize", action="store_true", default=False)
     parser.add_argument('--debug', '-d', help='Debug output', action='store_true')
 
 

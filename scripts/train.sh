@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-VERSION=$(git describe --exact-match --tags 2>/dev/null || git rev-parse --short HEAD)
+if [ -z "$VERSION" ] ; then
+  VERSION=$(git describe --exact-match --tags 2>/dev/null || git rev-parse --short HEAD)
+fi
 
 set -e
 
@@ -13,6 +15,7 @@ fi
 rm -rf runs/segment/iiif_urls runs/segment/vintagereality
 
 echo "Using $WORKERS workers for processing."
+echo "Setting version to $VERSION"
 
 python scripts/train_segmentation.py --model yolo11n-seg.pt --data data/iiif-urls/data.yaml --output runs/segment/iiif_urls --workers $WORKERS
 

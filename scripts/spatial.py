@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 logger = logging.getLogger(__name__)
 
 HF_REPO_ID = "cmahnke/vintagereality"
-HF_FILENAME = "vintagereality.pt"
+HF_FILENAME = "vintagereality-1.0.pt"
 
 EXIFTOOL_CONFIG = """
 %Image::ExifTool::UserDefined = (
@@ -394,9 +394,14 @@ def main():
       if args.model:
           if not args.model.exists():
               logger.info(f"Model not found at {args.model}. Downloading from Hugging Face Hub")
-              args.model.parent.mkdir(parents=True, exist_ok=True)
-              cached_file = hf_hub_download(repo_id=HF_REPO_ID, filename=HF_FILENAME)
-              shutil.copy(cached_file, args.model)
+              try:
+                  args.model.parent.mkdir(parents=True, exist_ok=True)
+                  cached_file = hf_hub_download(repo_id=HF_REPO_ID, filename=HF_FILENAME)
+                  shutil.copy(cached_file, args.model)
+                  logger.info(f"Downloaded model to {args.model}")
+              except Exception as e:
+                  logger.error(f"Failed to download model: {e}")
+                  sys.exit(1)
 
           try:
               left_pil, right_pil = load_card_yolo(im, args.model, args.background_color, use_masks=(args.background_color is not None), debug=args.debug)
