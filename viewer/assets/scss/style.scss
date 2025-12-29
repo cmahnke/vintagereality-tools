@@ -1,14 +1,22 @@
-@use 'sass:color';
+@use "sass:color";
 @use "pkg:@fontsource-utils/scss" as fontsource;
 
 @use "pkg:@fontsource-variable/fredoka/scss" as fredokaVariabale;
 @use "pkg:@fontsource-variable/oxanium/scss" as oxaniumVariabale;
 
-@include fontsource.faces($metadata: fredokaVariabale.$metadata, $weights: 400, $subsets: latin);
-@include fontsource.faces($metadata: oxaniumVariabale.$metadata, $weights: 400, $subsets: latin);
+@include fontsource.faces(
+  $metadata: fredokaVariabale.$metadata,
+  $weights: 400,
+  $subsets: latin
+);
+@include fontsource.faces(
+  $metadata: oxaniumVariabale.$metadata,
+  $weights: 400,
+  $subsets: latin
+);
 
-$cyan: rgb(0,255,255);
-$magenta: rgb(255,0,255);
+$cyan: rgb(0, 255, 255);
+$magenta: rgb(255, 0, 255);
 
 :root {
   line-height: 1.5;
@@ -17,7 +25,12 @@ $magenta: rgb(255,0,255);
   --background-color: #1a1a1a;
   --text-color: #f0f0f0;
   --accent-color: #{$cyan};
-  --button-bg: linear-gradient(70deg, #{color.adjust($cyan, $lightness: -20%)} 0%, #{color.adjust($magenta, $lightness: -20%)} 100%) fixed;
+  --button-bg: linear-gradient(
+      70deg,
+      #{color.adjust($cyan, $lightness: -20%)} 0%,
+      #{color.adjust($magenta, $lightness: -20%)} 100%
+    )
+    fixed;
   --button-text: #ffffff;
   --cyan: #{$cyan};
   --magenta: #{$magenta};
@@ -30,15 +43,21 @@ body {
   align-items: center;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Fredoka Variable', sans-serif;
+  font-family: "Fredoka Variable", sans-serif;
   color: var(--text-color);
-  background: linear-gradient(70deg, color.adjust($cyan, $lightness: -40%) 0%, black 50%, color.adjust($magenta, $lightness: -40%) 100%) fixed;
+  background: linear-gradient(
+      70deg,
+      color.adjust($cyan, $lightness: -40%) 0%,
+      black 50%,
+      color.adjust($magenta, $lightness: -40%) 100%
+    )
+    fixed;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  font-family: 'Oxanium Variable', serif;
+  font-family: "Oxanium Variable", serif;
   margin-bottom: 0.5em;
 }
 
@@ -95,9 +114,9 @@ pre {
 
 .warning {
   background-color: black;
-  font-family: 'Oxanium Variable', serif;
+  font-family: "Oxanium Variable", serif;
   font-size: 3rem;
-  background: linear-gradient(290deg, $magenta 0%, $cyan 100%) fixed;;
+  background: linear-gradient(290deg, $magenta 0%, $cyan 100%) fixed;
   padding: 1rem;
   border-radius: 1rem;
   margin: 1rem;

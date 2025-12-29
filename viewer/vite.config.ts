@@ -1,29 +1,31 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from "vite";
 import { resolve } from "path";
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { viteStaticCopy } from "vite-plugin-static-copy";
 import { NodePackageImporter } from "sass";
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
-const BASE_URL = process.env.BASE_URL || '';
+const BASE_URL = process.env.BASE_URL || "";
 
-function generateImagesJson() {
+function generateImagesJson(): Plugin {
   return {
-    name: 'generate-images-json',
+    name: "generate-images-json",
     buildStart() {
-      const imagesDir = path.resolve(__dirname, 'public/images');
-      const outputPath = path.resolve(__dirname, 'public/images.json');
-      
+      const imagesDir = path.resolve(__dirname, "public/images");
+      const outputPath = path.resolve(__dirname, "public/images.json");
+
       if (fs.existsSync(imagesDir)) {
-        const files = fs.readdirSync(imagesDir).filter(file => {
+        const files = fs.readdirSync(imagesDir).filter((file) => {
           return /\.(heic)$/i.test(file);
         });
         fs.writeFileSync(outputPath, JSON.stringify(files, null, 2));
         console.log(`Generated images.json with ${files.length} images.`);
       } else {
-        console.warn('public/images directory not found, skipping images.json generation.');
+        console.warn(
+          "public/images directory not found, skipping images.json generation.",
+        );
       }
-    }
+    },
   };
 }
 
@@ -33,11 +35,15 @@ export default defineConfig({
     generateImagesJson(),
     viteStaticCopy({
       targets: [
-        /*
         {
-          src: 'node_modules/onnxruntime-web/dist/*.wasm',
-          dest: '.'
+          src: "node_modules/onnxruntime-web/dist/*.wasm",
+          dest: ".",
         },
+        {
+          src: "node_modules/onnxruntime-web/dist/*.mjs",
+          dest: ".",
+        },
+        /*
         {
           src: 'node_modules/@6over3/zeroperl-ts/dist/esm/*.wasm',
           dest: '.'
@@ -46,38 +52,34 @@ export default defineConfig({
           src: 'node_modules/libheif-js/libheif-wasm/*.wasm',
           dest: '.'
         },
-        {
-          src: 'node_modules/onnxruntime-web/dist/*.mjs',
-          dest: '.'
-        },
         */
         {
-          src: '../weights/vintagereality-*.onnx',
-          dest: 'model',
-          rename: 'vintagereality.onnx'
-        }
-      ]
-    })
+          src: "../weights/vintagereality-*.onnx",
+          dest: "model",
+          rename: "vintagereality.onnx",
+        },
+      ],
+    }),
   ],
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        images: resolve(__dirname, 'images.html')
+        main: resolve(__dirname, "index.html"),
+        images: resolve(__dirname, "images.html"),
       },
       output: {
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
-        assetFileNames: `assets/[name].[ext]`
-      }
-    }
+        assetFileNames: `assets/[name].[ext]`,
+      },
+    },
   },
   css: {
     preprocessorOptions: {
       scss: {
         api: "modern-compiler",
-        importers: [new NodePackageImporter()]
-      }
-    }
-  }
-})
+        importers: [new NodePackageImporter()],
+      } as any,
+    },
+  },
+});

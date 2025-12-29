@@ -6,3 +6,7 @@ yolo*
 .DS_Store
 weights/
 data/**/*.npy
+louvre.*
+calcutta.*
+india.*
+neues-museum.*
