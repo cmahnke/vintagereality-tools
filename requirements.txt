@@ -1,5 +1,5 @@
 pillow_heif
-jxlpy
+pyvips
 opencv-python-headless
 stereoscopy
 gdown

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys, os
+import sys, os, io
 import tempfile
 import shutil
 import argparse
@@ -22,6 +22,24 @@ import torch
 import torchvision.transforms.functional as F
 from torchvision.models.optical_flow import raft_large, Raft_Large_Weights
 import matplotlib.pyplot as plt
+
+try:
+    import pyvips
+except (ImportError, OSError):
+    pyvips = None
+
+
+def loadPILImage(path):
+    """Load an image with PIL, falling back to pyvips for formats PIL can't decode (e.g. JXL)."""
+    try:
+        img = Image.open(path)
+        img.load()
+        return img
+    except (Image.UnidentifiedImageError, OSError):
+        if pyvips is None:
+            raise
+        pngBytes = pyvips.Image.new_from_file(str(path), access="sequential").write_to_buffer(".png")
+        return Image.open(io.BytesIO(pngBytes))
 
 logger = logging.getLogger(__name__)
 
@@ -386,10 +404,7 @@ def main():
     logger.debug("Starting processing")
 
     if args.image:
-      if str(args.image).endswith('.jxl'):
-          from jxlpy import JXLImagePlugin
-
-      im = Image.open(args.image)
+      im = loadPILImage(args.image)
 
       if args.model:
           if not args.model.exists():

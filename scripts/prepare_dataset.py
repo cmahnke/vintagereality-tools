@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import io
 import pathlib
 import yaml
 import requests
@@ -10,11 +11,23 @@ from PIL import Image
 import re
 import unicodedata
 
-# Register JXL support
 try:
-    from jxlpy import JXLImagePlugin
-except ImportError:
-    print("Warning: jxlpy not found. JXL files might not load properly.")
+    import pyvips
+except (ImportError, OSError):
+    pyvips = None
+
+
+def loadPILImage(path):
+    """Load an image with PIL, falling back to pyvips for formats PIL can't decode (e.g. JXL)."""
+    try:
+        img = Image.open(path)
+        img.load()
+        return img
+    except (Image.UnidentifiedImageError, OSError):
+        if pyvips is None:
+            raise
+        pngBytes = pyvips.Image.new_from_file(str(path), access="sequential").write_to_buffer(".png")
+        return Image.open(io.BytesIO(pngBytes))
 
 def main():
     parser = argparse.ArgumentParser(description="Prepare dataset for YOLO training from JXL images")
@@ -74,7 +87,7 @@ def main():
             
             try:
                 # Convert and save image
-                with Image.open(src_file) as im:
+                with loadPILImage(src_file) as im:
                     rgb_im = im.convert('RGB')
                     rgb_im.save(dest_img_path, quality=95)
                 
